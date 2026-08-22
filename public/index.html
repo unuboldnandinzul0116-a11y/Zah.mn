@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAH - Modern Classified Ads Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --secondary: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1f2937;
+      --light: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Navigation */
+    nav {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #db2777;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Search Section */
+    .search-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin: -2rem auto 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 600px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .search-box button {
+      width: 100%;
+    }
+
+    /* Posts Grid */
+    .posts-section {
+      display: grid;
+      grid-template-columns: 1fr 4fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .filters {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      height: fit-content;
+    }
+
+    .filter-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-group h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      color: #6b7280;
+    }
+
+    .filter-group label {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .filter-group input[type="checkbox"] {
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .post-card {
+      background: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .post-image {
+      width: 100%;
+      height: 200px;
+      background: var(--light);
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    .post-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .post-content {
+      padding: 1.25rem;
+    }
+
+    .post-category {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .post-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .post-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .post-location {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .post-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .post-author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .post-author-name {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .post-time {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    /* Dashboard */
+    .dashboard {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard h2 {
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+
+    .user-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul a {
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section ul a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #374151;
+      padding-top: 1rem;
+      text-align: center;
+      color: #9ca3af;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .posts-section {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .posts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .hero-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo">ZAH</div>
+        <ul class="nav-links">
+          <li><a href="#browse">Browse Ads</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-primary" onclick="showAuth('login')">Login</button>
+          <button class="btn btn-secondary" onclick="showAuth('register')">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>🚀 Welcome to ZAH</h1>
+      <p>The Modern Classified Ads Platform for Mongolia</p>
+      <div class="hero-buttons">
+        <button class="btn btn-secondary" style="background: white; color: var(--primary);" onclick="scrollToSection('posts')">Browse Ads</button>
+        <button class="btn btn-secondary" onclick="showAuth('register')">Create Account</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Box -->
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search classifieds... (e.g., car, apartment, job)">
+      <button class="btn btn-primary" onclick="performSearch()">Search</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div id="posts" class="posts-section">
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <h3>Categories</h3>
+          <label><input type="checkbox" value="Real Estate"> Real Estate</label>
+          <label><input type="checkbox" value="Vehicles"> Vehicles</label>
+          <label><input type="checkbox" value="Electronics"> Electronics</label>
+          <label><input type="checkbox" value="Furniture"> Furniture</label>
+          <label><input type="checkbox" value="Clothing"> Clothing</label>
+          <label><input type="checkbox" value="Services"> Services</label>
+          <label><input type="checkbox" value="Jobs"> Jobs</label>
+        </div>
+
+        <div class="filter-group">
+          <h3>Condition</h3>
+          <label><input type="checkbox" value="New"> New</label>
+          <label><input type="checkbox" value="Like New"> Like New</label>
+          <label><input type="checkbox" value="Used"> Used</label>
+        </div>
+
+        <div class="filter-group">
+          <h3>Price Range</h3>
+          <input type="range" min="0" max="100000000" step="1000000" style="width: 100%;">
+        </div>
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="posts-grid" id="postsGrid">
+        <!-- Posts will be loaded here -->
+        <div style="text-align: center; grid-column: 1/-1; padding: 2rem;">
+          <p>Loading posts...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About ZAH</h3>
+          <p>ZAH is Mongolia's modern classified ads platform, making buying and selling smooth and secure.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#browse">Browse Ads</a></li>
+            <li><a href="#post">Post an Ad</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <ul>
+            <li>📧 hello@zah.mn</li>
+            <li>📞 +976 1234 5678</li>
+            <li>📍 Ulaanbaatar, Mongolia</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 ZAH Classified Ads. All rights reserved. | <a href="#" style="color: var(--primary);">Privacy Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Auth Modal (placeholder) -->
+  <script>
+    function showAuth(type) {
+      alert(`${type === 'login' ? 'Login' : 'Register'} page will open here!`);
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function performSearch() {
+      alert('Search functionality will connect to the backend API');
+    }
+
+    // Load sample posts
+    async function loadPosts() {
+      try {
+        const response = await fetch('/api/posts');
+        const data = await response.json();
+        
+        if (data.success && data.posts.length > 0) {
+          renderPosts(data.posts);
+        } else {
+          renderSamplePosts();
+        }
+      } catch (error) {
+        renderSamplePosts();
+      }
+    }
+
+    function renderSamplePosts() {
+      const grid = document.getElementById('postsGrid');
+      const categories = ['Real Estate', 'Vehicles', 'Electronics', 'Furniture'];
+      const samples = [
+        { title: 'Modern Apartment in Sukhbaatar', price: '50,000,000', category: 'Real Estate', location: 'Ulaanbaatar' },
+        { title: 'Toyota Camry 2020', price: '45,000,000', category: 'Vehicles', location: 'Ulaanbaatar' },
+        { title: 'Gaming Laptop RTX 3060', price: '3,500,000', category: 'Electronics', location: 'Ulaanbaatar' },
+        { title: 'Wooden Dining Set', price: '800,000', category: 'Furniture', location: 'Khan-Uul' },
+        { title: 'iPhone 13 Pro Max', price: '2,800,000', category: 'Electronics', location: 'Bayanzurkh' },
+        { title: 'Office Space for Rent', price: '2,000,000', category: 'Real Estate', location: 'Peace Avenue' }
+      ];
+
+      grid.innerHTML = samples.map(post => `
+        <div class="post-card">
+          <div class="post-image">
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+              📦
+            </div>
+          </div>
+          <div class="post-content">
+            <span class="post-category">${post.category}</span>
+            <div class="post-title">${post.title}</div>
+            <div class="post-price">₮${post.price}</div>
+            <div class="post-location">📍 ${post.location}</div>
+            <div class="post-footer">
+              <div class="post-author">
+                <div class="post-author-avatar">Z</div>
+                <div class="post-author-name">ZAH User</div>
+              </div>
+              <div class="post-time">1 hour ago</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    loadPosts();
+  </script>
+</body>
+</html>
